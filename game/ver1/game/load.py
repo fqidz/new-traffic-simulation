@@ -1,8 +1,6 @@
 import random
 
-import pyglet as pg
-
-from . import resources
+from . import resources, physicalobject
 
 
 def cars(num_cars, window, batch=None):
@@ -15,20 +13,20 @@ def cars(num_cars, window, batch=None):
 
         # position car based on rotation
         if rot == 0:
-            car_x = window.width // 2
+            car_x = window.width / 2
             car_y = 0
         elif rot == 90:
             car_x = 0
-            car_y = window.width // 2
+            car_y = window.width / 2
         elif rot == 180:
-            car_x = window.width // 2
+            car_x = window.width / 2
             car_y = window.width
         else:  # rot == 270
             car_x = window.width
-            car_y = window.width // 2
+            car_y = window.width / 2
 
-        new_car = pg.sprite.Sprite(img=resources.car_image,
-                                   x=car_x, y=car_y)
+        new_car = physicalobject.PhysicalObject(img=resources.car_image,
+                                                x=car_x, y=car_y, batch=batch, window=window)
 
         new_car.rotation = rot
         cars_list.append(new_car)
