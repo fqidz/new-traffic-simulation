@@ -1,5 +1,7 @@
-import pyglet as pg
 import math
+from collections import deque
+
+import pyglet as pg
 
 from game import load
 
@@ -12,15 +14,12 @@ background = pg.graphics.Group(order=0)
 foreground = pg.graphics.Group(order=1)
 
 # Spawn car sprites
-cars = load.cars(4, 50, window=window, batch=main_batch, group=foreground)
+cars = load.cars(8, 50, window=window, batch=main_batch, group=foreground)
 
 closest_distance = float('inf')
 closest_car = None
 
-shapes_test = []
-
-
-
+cars_lines = deque(maxlen=len(cars))
 
 
 @window.event
@@ -32,14 +31,22 @@ def on_draw():
 def update(dt):
     for obj in cars:
         obj.update(dt)
-    for car in cars:
-        front_x = car.x + ((car.height / 2) * math.cos(-math.radians(car.rotation)))
-        front_y = car.y + ((car.width / 2) * math.sin(-math.radians(car.rotation)))
-        shape = pg.shapes.Rectangle(front_x, front_y, 50, 2, batch=main_batch, group=foreground)
-        shape.rotation = car.rotation
-        ray_origin = 0
-        ray_direction = 0
-        shapes_test.append(shape)
+    for i, car in enumerate(cars):
+        # copy list of cars
+        cars_dup = cars.copy()
+        # remove current car
+        cars_dup.pop(i)
+        # init the lines that this current car will have
+        car_lines = []
+        for other_cars in cars_dup:
+            # draw line from current car to all other cars
+            line = pg.shapes.Line(car.x, car.y, other_cars.x, other_cars.y, width=1, batch=main_batch,
+                                  group=foreground)
+            line_length = math.dist((line.x, line.y), (line.x2, line.y2))
+            car_lines.append([line, line_length])
+        cars_lines.append(car_lines)
+    print(cars_lines)
+    # TODO: only get line that is shortest
 
 
 if __name__ == "__main__":
