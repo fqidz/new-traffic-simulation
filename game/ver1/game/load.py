@@ -26,8 +26,10 @@ def cars(num_cars, window, batch=None):
             car_y = window.width / 2
 
         new_car = physicalobject.PhysicalObject(img=resources.car_image,
-                                                x=car_x, y=car_y, batch=batch, window=window)
-
+                                                x=car_x, y=car_y, batch=batch)
+        
         new_car.rotation = rot
+        # car speed
+        new_car.velocity_x, new_car.velocity_y = random.random() * 40, random.random() * 40
         cars_list.append(new_car)
     return cars_list
