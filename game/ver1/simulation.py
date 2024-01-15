@@ -4,16 +4,22 @@ from game import load
 
 # Set up a window
 window = pg.window.Window(1000, 1000)
-main_batch = pg.graphics.Batch()
 
-# Initialize the car sprite
-cars = load.cars(20, window, main_batch)
+# Set up batches
+main_batch = pg.graphics.Batch()
+background = pg.graphics.Group(order=0)
+foreground = pg.graphics.Group(order=1)
+
+
+# Spawn car sprites
+cars = load.cars(4, 50, window=window, batch=main_batch, group=foreground)
 
 
 @window.event
 def on_draw():
     window.clear()
     main_batch.draw()
+
 
 def update(dt):
     for obj in cars:

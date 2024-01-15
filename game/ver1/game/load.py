@@ -1,9 +1,10 @@
 import random
+import math
 
 from . import resources, physicalobject
 
 
-def cars(num_cars, window, batch=None):
+def cars(num_cars, speed, window, batch=None, group=None):
     """Generate asteroid objects with random positions and velocities,
     not close to the player"""
     cars_list = []
@@ -13,23 +14,25 @@ def cars(num_cars, window, batch=None):
 
         # position car based on rotation
         if rot == 0:
-            car_x = window.width / 2
-            car_y = 0
-        elif rot == 90:
             car_x = 0
             car_y = window.width / 2
-        elif rot == 180:
+        elif rot == 90:
             car_x = window.width / 2
             car_y = window.width
-        else:  # rot == 270
+        elif rot == 180:
             car_x = window.width
             car_y = window.width / 2
+        else:  # rot == 270
+            car_x = window.width / 2
+            car_y = 0
 
         new_car = physicalobject.PhysicalObject(img=resources.car_image,
-                                                x=car_x, y=car_y, batch=batch)
+                                                x=car_x, y=car_y, batch=batch, group=group)
         
         new_car.rotation = rot
+
         # car speed
-        new_car.velocity_x, new_car.velocity_y = random.random() * 40, random.random() * 40
+        new_car.velocity_x = random.randint(speed, speed + 10) * math.cos(-math.radians(new_car.rotation))
+        new_car.velocity_y = random.randint(speed, speed + 10) * math.sin(-math.radians(new_car.rotation))
         cars_list.append(new_car)
     return cars_list

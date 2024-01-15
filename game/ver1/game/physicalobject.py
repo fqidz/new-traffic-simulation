@@ -18,8 +18,8 @@ class PhysicalObject(pg.sprite.Sprite):
         self.x += self.velocity_x * dt
         self.y += self.velocity_y * dt
 
-        # Delete self if out of bounds
-        self.check_bounds()
+        # # Delete self if out of bounds
+        # self.check_bounds()
 
     def check_bounds(self):
         """Delete self if out of bounds"""
