@@ -33,9 +33,3 @@ def cars(num_cars, speed, window, batch=None, group=None):
         cars_list.append(new_car)
     return cars_list
 
-
-def closest_car(ray_origin, ray_direction, cars):
-    closest_distance = float('inf')
-    closest_car = None
-
-    for car in cars:
