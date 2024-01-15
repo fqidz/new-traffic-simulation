@@ -11,6 +11,7 @@ class CarObject(pg.sprite.Sprite):
 
         # In addition to position, we have velocity
         self.velocity_x, self.velocity_y = 0.0, 0.0
+        self.vel = 20
 
     def velocity(self, speed):
         self.velocity_x = speed * math.cos(-math.radians(self.rotation))
@@ -18,11 +19,10 @@ class CarObject(pg.sprite.Sprite):
 
     def update(self, dt):
         """This method should be called every frame."""
-        self.velocity(100)
+        self.velocity(self.vel)
 
         # Update position according to velocity and time
         self.x += self.velocity_x * dt
         self.y += self.velocity_y * dt
 
         self.rotation += 20 * dt
-
