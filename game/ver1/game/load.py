@@ -1,7 +1,6 @@
 import random
-import math
 
-from . import resources, physicalobject
+from . import resources, carobject
 
 
 def cars(num_cars, speed, window, batch=None, group=None):
@@ -26,13 +25,17 @@ def cars(num_cars, speed, window, batch=None, group=None):
             car_x = window.width / 2
             car_y = 0
 
-        new_car = physicalobject.PhysicalObject(img=resources.car_image,
-                                                x=car_x, y=car_y, batch=batch, group=group)
-        
-        new_car.rotation = rot
+        new_car = carobject.CarObject(img=resources.car_image,
+                                      x=car_x, y=car_y, batch=batch, group=group)
 
-        # car speed
-        new_car.velocity_x = random.randint(speed, speed + 10) * math.cos(-math.radians(new_car.rotation))
-        new_car.velocity_y = random.randint(speed, speed + 10) * math.sin(-math.radians(new_car.rotation))
+        # initialize rotation
+        new_car.rotation = rot
         cars_list.append(new_car)
     return cars_list
+
+
+def closest_car(ray_origin, ray_direction, cars):
+    closest_distance = float('inf')
+    closest_car = None
+
+    for car in cars:
