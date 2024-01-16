@@ -2,7 +2,7 @@ from collections import deque
 
 import pyglet as pg
 
-from game import load, behavior
+from game import load
 
 # Set up a window
 window = pg.window.Window(1000, 1000)
@@ -13,7 +13,11 @@ background = pg.graphics.Group(order=0)
 foreground = pg.graphics.Group(order=1)
 
 # Spawn car sprites
-cars = load.cars(2, window=window, batch=main_batch, group=foreground)
+cars = load.cars(1, window=window, batch=main_batch, group=foreground)
+# TEST: raycast lines
+lines = deque(maxlen=len(cars))
+bounding_boxes = deque(maxlen=len(cars) * 4)
+
 
 @window.event
 def on_draw():
@@ -24,7 +28,18 @@ def on_draw():
 def update(dt):
     for obj in cars:
         obj.update(dt)
-        print(obj.ray)
+        # TEST: raycast lines
+        line = pg.shapes.Line(obj.ray[0][0], obj.ray[0][1], obj.ray[1][0], obj.ray[1][1], batch=main_batch,
+                              group=foreground)
+        lines.append(line)
+
+        # TEST: bounding box draw
+        for i, coord in enumerate(obj.bounding_box_lines[:-1]):
+            bounding_boxes.append(pg.shapes.Line(obj.bounding_box_lines[i][0], obj.bounding_box_lines[i][1],
+                                                 obj.bounding_box_lines[i + 1][0], obj.bounding_box_lines[i + 1][0],
+                                                 batch=main_batch, group=foreground))
+
+        print(obj.bounding_box_lines)
 
 
 if __name__ == "__main__":

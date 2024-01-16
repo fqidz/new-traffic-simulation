@@ -2,7 +2,7 @@ import math
 
 import pyglet as pg
 
-# from game.behavior import Line
+from .collision import bounding_box
 
 
 class CarObject(pg.sprite.Sprite):
@@ -21,6 +21,9 @@ class CarObject(pg.sprite.Sprite):
         self.ray_x2 = 0
         self.ray_y2 = 0
 
+        # bounding box
+        self.bounding_box_lines = None
+
     def velocity(self, speed):
         self.velocity_x = speed * math.cos(-math.radians(self.rotation))
         self.velocity_y = speed * math.sin(-math.radians(self.rotation))
@@ -29,6 +32,8 @@ class CarObject(pg.sprite.Sprite):
         """This method should be called every frame."""
         self.velocity(self.speed)
         self.check_collision()
+        # get bounding box
+        self.bounding_box_lines = bounding_box(self)
 
         # Update position according to velocity and time
         self.x += self.velocity_x * dt
@@ -37,7 +42,7 @@ class CarObject(pg.sprite.Sprite):
         self.rotation += 1 * dt
     
     def raycast(self):
-        """Send out a ray infront of car"""
+        """Send out a ray in front of car"""
         # ray_x1 = self.x
         # ray_y1 = self.y
         self.ray_x2 = self.x + (200 * math.cos(-math.radians(self.rotation)))
