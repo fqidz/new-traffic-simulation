@@ -1,8 +1,10 @@
-import pyglet as pg
 import math
 from collections import deque
 
+import pyglet as pg
+
 from game import load
+from game import behavior
 
 # Set up a window
 window = pg.window.Window(1000, 1000)
@@ -13,11 +15,10 @@ background = pg.graphics.Group(order=0)
 foreground = pg.graphics.Group(order=1)
 
 # Spawn car sprites
-cars = load.cars(20, 50, window=window, batch=main_batch, group=foreground)
+cars = load.cars(8, 50, window=window, batch=main_batch, group=foreground)
 
-# cars line
+# Car lines
 cars_all_lines = deque(maxlen=len(cars))
-
 
 
 @window.event
@@ -29,22 +30,7 @@ def on_draw():
 def update(dt):
     for obj in cars:
         obj.update(dt)
-    for i, cur_car in enumerate(cars):
-        # copy list of cars
-        car_list_dup = cars.copy()
-        # remove current car from list
-        car_list_dup.pop(i)
-        # init the dict for lines that this current car will have
-        cur_car_lines = {}
-        for other_cars in car_list_dup:
-            # draw line from current car to all other cars
-            line = pg.shapes.Line(cur_car.x, cur_car.y, other_cars.x, other_cars.y, width=1, batch=main_batch,
-                                  group=foreground)
-            line_length = math.dist((line.x, line.y), (line.x2, line.y2))
-
-            cur_car_lines[line] = line_length
-        # append shortest line
-        cars_all_lines.append(min(cur_car_lines, key=cur_car_lines.get))
+    behavior.closest_car(cars, cars_all_lines, batch=main_batch, group=foreground)
 
 
 if __name__ == "__main__":

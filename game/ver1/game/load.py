@@ -29,9 +29,8 @@ def cars(num_cars, speed, window, batch=None, group=None):
                                       x=car_x, y=car_y, batch=batch, group=group)
 
         # initialize rotation
-        new_car.rotation = rot
-        new_car.rotation += random.randint(20, 50)
-        new_car.vel = random.randint(50, 100)
+        new_car.rotation = rot + random.randint(1, 4)
+        new_car.speed = random.randint(100, 110)
         cars_list.append(new_car)
     return cars_list
 

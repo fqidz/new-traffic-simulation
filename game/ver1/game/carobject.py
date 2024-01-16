@@ -9,6 +9,7 @@ class CarObject(pg.sprite.Sprite):
     def __init__(self, *args, **kwargs):
         super(CarObject, self).__init__(*args, **kwargs)
 
+        self.speed = 100
         # In addition to position, we have velocity
         self.velocity_x, self.velocity_y = 0.0, 0.0
         self.vel = 20
@@ -19,10 +20,11 @@ class CarObject(pg.sprite.Sprite):
 
     def update(self, dt):
         """This method should be called every frame."""
-        self.velocity(self.vel)
+        self.velocity(self.speed)
 
         # Update position according to velocity and time
         self.x += self.velocity_x * dt
         self.y += self.velocity_y * dt
 
-        self.rotation += 20 * dt
+        self.rotation += 1 * dt
+
