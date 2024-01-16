@@ -39,7 +39,7 @@ class CarObject(pg.sprite.Sprite):
         self.x += self.velocity_x * dt
         self.y += self.velocity_y * dt
 
-        self.rotation += 1 * dt
+        self.rotation += 20 * dt
     
     def raycast(self):
         """Send out a ray in front of car"""

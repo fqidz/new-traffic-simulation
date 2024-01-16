@@ -3,13 +3,18 @@ import math
 
 
 def bounding_box(obj: pg.sprite.Sprite):
-    # because obj.x is at the center
+    # rectangle diagonal formula; to get distance from center to corner
+    d = math.sqrt(math.pow(obj.width / 2, 2) + math.pow(obj.height / 2, 2))
 
-    top_left_x = obj.x + (-obj.width / 2 * math.cos(-math.radians(obj.rotation)))
-    top_left_y = obj.y + (-obj.width / 2 * math.sin(-math.radians(obj.rotation)))
+    # calculate top left
+    angle_top_left = -math.radians(math.atan(obj.height / obj.width))
+    top_left_x = obj.x + d * math.cos(angle_top_left + math.radians(obj.rotation))
+    top_left_y = obj.y + d * math.sin(angle_top_left + math.radians(obj.rotation))
 
-    top_right_x = 0
-    top_right_y = 0
+    # calculate top right
+    angle_top_right = -math.radians(math.atan(-obj.height / -obj.width))
+    top_right_x = obj.x + d * math.cos(angle_top_right + math.radians(obj.rotation))
+    top_right_y = obj.y + d * math.sin(angle_top_right + math.radians(obj.rotation))
 
     bot_right_x = 0
     bot_right_y = 0
