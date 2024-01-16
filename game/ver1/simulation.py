@@ -1,10 +1,8 @@
-import math
 from collections import deque
 
 import pyglet as pg
 
-from game import load
-from game import behavior
+from game import load, behavior
 
 # Set up a window
 window = pg.window.Window(1000, 1000)
