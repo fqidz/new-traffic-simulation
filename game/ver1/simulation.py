@@ -15,8 +15,6 @@ foreground = pg.graphics.Group(order=1)
 # Spawn car sprites
 cars = load.cars(2, window=window, batch=main_batch, group=foreground)
 
-
-
 @window.event
 def on_draw():
     window.clear()
