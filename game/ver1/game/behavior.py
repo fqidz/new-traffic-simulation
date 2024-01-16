@@ -5,8 +5,7 @@ import pyglet as pg
 
 
 # TODO: transfer this to an actual closest car distance function
-def closest_car(car_list, batch, group):
-    cars_all_lines = deque(maxlen=len(car_list))
+def closest_car(car_list, output_list, batch, group):
     for i, cur_car in enumerate(car_list):
         # copy list of cars
         car_list_dup = car_list.copy()
@@ -22,6 +21,4 @@ def closest_car(car_list, batch, group):
 
             cur_car_lines[line] = line_length
         # append shortest line
-        cars_all_lines.append(min(cur_car_lines, key=cur_car_lines.get))
-
-    return cars_all_lines
+        output_list.append(min(cur_car_lines, key=cur_car_lines.get))

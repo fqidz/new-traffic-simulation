@@ -18,7 +18,7 @@ foreground = pg.graphics.Group(order=1)
 cars = load.cars(8, 50, window=window, batch=main_batch, group=foreground)
 
 # Car lines
-cars_line = behavior.closest_car(cars, batch=main_batch, group=foreground)
+cars_all_lines = deque(maxlen=len(cars))
 
 
 @window.event
@@ -30,6 +30,7 @@ def on_draw():
 def update(dt):
     for obj in cars:
         obj.update(dt)
+    behavior.closest_car(cars, cars_all_lines, batch=main_batch, group=foreground)
 
 
 if __name__ == "__main__":
