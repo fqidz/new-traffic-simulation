@@ -3,7 +3,7 @@ import random
 from . import resources, carobject
 
 
-def cars(num_cars, speed, window, batch=None, group=None):
+def cars(num_cars, window, batch=None, group=None):
     """Generate asteroid objects with random positions and velocities,
     not close to the player"""
     cars_list = []

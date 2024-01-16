@@ -13,7 +13,7 @@ background = pg.graphics.Group(order=0)
 foreground = pg.graphics.Group(order=1)
 
 # Spawn car sprites
-cars = load.cars(8, 50, window=window, batch=main_batch, group=foreground)
+cars = load.cars(2, window=window, batch=main_batch, group=foreground)
 
 
 
