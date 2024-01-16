@@ -1,24 +1,16 @@
 import math
-from collections import deque
 
 import pyglet as pg
 
 
 # TODO: transfer this to an actual closest car distance function
-def closest_car(car_list, output_list, batch, group):
-    for i, cur_car in enumerate(car_list):
-        # copy list of cars
-        car_list_dup = car_list.copy()
-        # remove current car from list
-        car_list_dup.pop(i)
-        # init the dict for lines that this current car will have
-        cur_car_lines = {}
-        for other_cars in car_list_dup:
-            # draw line from current car to all other cars
-            line = pg.shapes.Line(cur_car.x, cur_car.y, other_cars.x, other_cars.y, width=1, batch=batch,
-                                  group=group)
-            line_length = math.dist((line.x, line.y), (line.x2, line.y2))
+def closest_car(car_list: list, output_list: list, batch, group):
+    for cur_car in car_list:
+        x = cur_car.x
+        y = cur_car.y
+        x2 = cur_car.x + (200 * math.cos(-math.radians(cur_car.rotation)))
+        y2 = cur_car.y + (200 * math.sin(-math.radians(cur_car.rotation)))
 
-            cur_car_lines[line] = line_length
-        # append shortest line
-        output_list.append(min(cur_car_lines, key=cur_car_lines.get))
+        ray = pg.shapes.Line(x, y, x2, y2, batch=batch, group=group)
+
+        output_list.append(ray)
