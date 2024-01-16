@@ -16,7 +16,7 @@ foreground = pg.graphics.Group(order=1)
 cars = load.cars(1, window=window, batch=main_batch, group=foreground)
 # TEST: raycast lines
 lines = deque(maxlen=len(cars))
-bounding_boxes = deque(maxlen=len(cars) * 4)
+bounding_boxes = deque(maxlen=len(cars))
 
 
 @window.event
@@ -34,11 +34,11 @@ def update(dt):
         lines.append(line)
 
         # TEST: bounding box draw
-        for i, coord in enumerate(obj.bounding_box_lines[:-1]):
-            bounding_boxes.append(pg.shapes.Line(obj.bounding_box_lines[i][0], obj.bounding_box_lines[i][1],
-                                                 obj.bounding_box_lines[i + 1][0], obj.bounding_box_lines[i + 1][0],
-                                                 batch=main_batch, group=foreground))
-
+        # for i, coord in enumerate(obj.bounding_box_lines[:-1]):
+        bounding_boxes.append(pg.shapes.Line(obj.bounding_box_lines[0][0], obj.bounding_box_lines[0][1],
+                                             obj.bounding_box_lines[0 + 1][0], obj.bounding_box_lines[0 + 1][0],
+                                             batch=main_batch, group=foreground))
+        print((obj.x, obj.y))
         print(obj.bounding_box_lines)
 
 
