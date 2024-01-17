@@ -46,7 +46,11 @@ def angle_between(o, p1, p2):
         (v1[0] ** 2 + v1[1] ** 2) * (v2[0] ** 2 + v2[1] ** 2))
 
     if dot_product > 0:
-        angle = math.acos(dot_product / magnitude_product)
+        # duct tape fix for acos having >1 input (math domain error)
+        if 1 >= dot_product / magnitude_product:
+            angle = math.acos(dot_product / magnitude_product)
+        else:
+            angle = math.radians(180)
     else:
         angle = math.radians(180)
 
