@@ -2,7 +2,7 @@ from collections import deque
 
 import pyglet as pg
 
-from game import load
+from game import load, behavior
 
 # Set up a window
 window = pg.window.Window(1000, 1000)
@@ -13,10 +13,9 @@ background = pg.graphics.Group(order=0)
 foreground = pg.graphics.Group(order=1)
 
 # Spawn car sprites
-cars = load.cars(1, window=window, batch=main_batch, group=foreground)
+cars = load.cars(4, window=window, batch=main_batch, group=foreground)
 # TEST: raycast lines
 lines = deque(maxlen=len(cars))
-bounding_boxes = deque(maxlen=len(cars))
 
 
 @window.event
@@ -26,20 +25,13 @@ def on_draw():
 
 
 def update(dt):
+    all_closest_car = behavior.closest_car(cars)
     for obj in cars:
         obj.update(dt)
-        # TEST: raycast lines
-        line = pg.shapes.Line(obj.ray[0][0], obj.ray[0][1], obj.ray[1][0], obj.ray[1][1], batch=main_batch,
-                              group=foreground)
-        lines.append(line)
-
-        # TEST: bounding box draw
-        # for i, coord in enumerate(obj.bounding_box_lines[:-1]):
-        bounding_boxes.append(pg.shapes.Line(obj.bounding_box_lines[0][0], obj.bounding_box_lines[0][1],
-                                             obj.bounding_box_lines[0 + 1][0], obj.bounding_box_lines[0 + 1][0],
-                                             batch=main_batch, group=foreground))
-        print((obj.x, obj.y))
-        print(obj.bounding_box_lines)
+        obj.closest_car = all_closest_car[obj]
+        lines.append(
+            pg.shapes.Line(obj.closest_car[0][0], obj.closest_car[0][1], obj.closest_car[1][0], obj.closest_car[1][1],
+                           batch=main_batch, group=foreground))
 
 
 if __name__ == "__main__":
