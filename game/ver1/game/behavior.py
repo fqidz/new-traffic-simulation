@@ -14,7 +14,7 @@ def closest_car(car_list: list):
             x2 = next_car.x
             y2 = next_car.y
 
-            # get line in front of cur car
+            # cast straight ray in front of cur car to use to get fov angle
             xp = (x + 200 * math.cos(-math.radians(cur_car.rotation)))
             yp = (y + 200 * math.sin(-math.radians(cur_car.rotation)))
 
@@ -40,8 +40,6 @@ def closest_car(car_list: list):
             
             # output the min ray and the corresponding speed of the next car
             car_rays[cur_car] = [min_ray, cur_to_other[min_ray]]
-
-            print(car_rays)
 
     return car_rays
 

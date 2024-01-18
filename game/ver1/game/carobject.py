@@ -15,8 +15,10 @@ class CarObject(pg.sprite.Sprite):
         self.velocity_magnitude = 0.0
         self.vel = 20
 
-        # init the closest car coords
-        self.closest_car = None
+        # init the closest car data
+        self.closest_car_ray = None
+        self.closest_car_dist = None
+        self.closest_car_vel = None
 
     def velocity(self, speed):
         self.velocity_x = speed * math.cos(-math.radians(self.rotation))
