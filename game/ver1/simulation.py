@@ -26,10 +26,15 @@ def on_draw():
 
 def update(dt):
     all_closest_car = behavior.closest_car(cars)
+    
+    # all_closest_car = closest_car(cars)
+    # for car, data in all_closest_car.items():
+    #     min_ray, (ray_dist, velocity_magnitude) = data
+    #     print(f"For car {car}, the smallest ray_dist is {ray_dist} and the corresponding velocity_magnitude is {velocity_magnitude}")
     for obj in cars:
         obj.update(dt)
         obj.closest_car = all_closest_car[obj]
-        print(obj.closest_car)
+
         lines.append(
             pg.shapes.Line(obj.closest_car[0][0], obj.closest_car[0][1], obj.closest_car[1][0], obj.closest_car[1][1],
                            batch=main_batch, group=foreground))

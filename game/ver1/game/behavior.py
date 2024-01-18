@@ -33,13 +33,15 @@ def closest_car(car_list: list):
                 cur_to_other[ray] = [ray_dist, next_car.velocity_magnitude]
             else:
                 # else set ray to inf so ray will not get cast
-                cur_to_other[((float('inf'), float('inf')), (float('inf'), float('inf')))] = float('inf')
+                cur_to_other[((float('inf'), float('inf')), (float('inf'), float('inf')))] = [float('inf'), float('inf')]
 
-            # output the ray for closest car
-            car_rays[cur_car] = min(cur_to_other, key=cur_to_other.get)
+            # get the ray for closest car
+            min_ray = min(cur_to_other, key=cur_to_other.get)
+            
+            # output the min ray and the corresponding speed of the next car
+            car_rays[cur_car] = [min_ray, cur_to_other[min_ray]]
 
-            # output vel for closest car
-            close_car_speed[cur_car] = None
+            print(car_rays)
 
     return car_rays
 
