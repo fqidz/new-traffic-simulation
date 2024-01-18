@@ -13,15 +13,19 @@ def cars(num_cars, window, batch=None, group=None):
 
         # position car based on rotation
         if rot == 0:
+            # left
             car_x = 0
             car_y = window.width / 2
         elif rot == 90:
+            # up
             car_x = window.width / 2
             car_y = window.width
         elif rot == 180:
+            # right
             car_x = window.width
             car_y = window.width / 2
         else:  # rot == 270
+            # down
             car_x = window.width / 2
             car_y = 0
 
@@ -30,7 +34,6 @@ def cars(num_cars, window, batch=None, group=None):
 
         # initialize rotation
         new_car.rotation = rot + random.randint(1, 4)
-        new_car.speed = random.randint(40, 110)
         cars_list.append(new_car)
     return cars_list
 

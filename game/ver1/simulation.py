@@ -15,9 +15,12 @@ foreground = pg.graphics.Group(order=1)
 # Spawn car sprites
 cars = []
 
+# TEST
+lines = deque(maxlen=20)
+
 
 def spawn_cars(dt):
-    spawn_cars_list = load.cars(4, window=window, batch=main_batch, group=foreground)
+    spawn_cars_list = load.cars(1, window=window, batch=main_batch, group=foreground)
     for car in spawn_cars_list:
         cars.append(car)
 
@@ -32,7 +35,6 @@ def update(dt):
     all_closest_car = behavior.closest_car(cars)
     for i, obj in enumerate(cars):
         obj.update(dt)
-        print(len(cars))
 
         # for idm data
         if len(cars) > 1:
@@ -41,6 +43,9 @@ def update(dt):
             obj.closest_car_ray = min_ray
             obj.closest_car_dist = closest_car_dist
             obj.closest_car_vel = closest_car_vel
+
+            lines.append(pg.shapes.Line(obj.closest_car_ray[0][0], obj.closest_car_ray[0][1], obj.closest_car_ray[1][0],
+                                        obj.closest_car_ray[1][1], batch=main_batch, group=foreground))
 
         # delete car if out of screen
         if obj.x < 0 or obj.x > window.width or obj.y < 0 or obj.y > window.height:
@@ -51,7 +56,7 @@ def update(dt):
 if __name__ == "__main__":
     # Update the game 120 times per second
     pg.clock.schedule_interval(update, 1 / 120.0)
-    pg.clock.schedule_interval(spawn_cars, 5)
+    pg.clock.schedule_interval(spawn_cars, 0.5)
 
     # Tell pyglet to do its thing
     pg.app.run()

@@ -12,5 +12,5 @@ pg.resource.path = ['../resources']
 pg.resource.reindex()
 
 # Load the main resources and get them to draw centered
-car_image = pg.resource.image("car.png")
+car_image = pg.resource.image("car2.png")
 center_image(car_image)
