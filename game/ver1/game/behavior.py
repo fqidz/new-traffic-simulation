@@ -2,14 +2,15 @@ import math
 
 
 def closest_car(car_list: list):
-    output = {}
+    car_rays = {}
+    close_car_speed = {}
     for i, cur_car in enumerate(car_list):
         other_cars = car_list.copy()
         other_cars.pop(i)
         cur_to_other = {}
         for next_car in other_cars:
-            x = cur_car.x
-            y = cur_car.y
+            x = cur_car.x + cur_car.width / 2 * math.cos(-math.radians(cur_car.rotation))
+            y = cur_car.y + cur_car.height * math.sin(-math.radians(cur_car.rotation))
             x2 = next_car.x
             y2 = next_car.y
 
@@ -29,14 +30,18 @@ def closest_car(car_list: list):
             # only return ray if other car is in front fov of the cur car
             ang_between = angle_between(cur_car_pos, cur_car_p, other_car_pos)
             if -30 <= ang_between <= 30:
-                cur_to_other[ray] = ray_dist
+                cur_to_other[ray] = [ray_dist, next_car.velocity_magnitude]
             else:
+                # else set ray to inf so ray will not get cast
                 cur_to_other[((float('inf'), float('inf')), (float('inf'), float('inf')))] = float('inf')
 
             # output the ray for closest car
-            output[cur_car] = min(cur_to_other, key=cur_to_other.get)
+            car_rays[cur_car] = min(cur_to_other, key=cur_to_other.get)
 
-    return output
+            # output vel for closest car
+            close_car_speed[cur_car] = None
+
+    return car_rays
 
 
 def angle_between(o, p1, p2):

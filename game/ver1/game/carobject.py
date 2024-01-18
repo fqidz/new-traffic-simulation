@@ -12,6 +12,7 @@ class CarObject(pg.sprite.Sprite):
         self.speed = 100
         # In addition to position, we have velocity
         self.velocity_x, self.velocity_y = 0.0, 0.0
+        self.velocity_magnitude = 0.0
         self.vel = 20
 
         # init the closest car coords
@@ -20,6 +21,7 @@ class CarObject(pg.sprite.Sprite):
     def velocity(self, speed):
         self.velocity_x = speed * math.cos(-math.radians(self.rotation))
         self.velocity_y = speed * math.sin(-math.radians(self.rotation))
+        self.velocity_magnitude = math.sqrt(self.velocity_x ** 2 + self.velocity_y ** 2)
 
     def update(self, dt):
         """This method should be called every frame."""

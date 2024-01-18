@@ -30,7 +30,7 @@ def cars(num_cars, window, batch=None, group=None):
 
         # initialize rotation
         new_car.rotation = rot + random.randint(1, 4)
-        new_car.speed = random.randint(100, 110)
+        new_car.speed = random.randint(40, 110)
         cars_list.append(new_car)
     return cars_list
 

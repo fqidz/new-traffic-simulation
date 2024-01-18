@@ -13,7 +13,7 @@ background = pg.graphics.Group(order=0)
 foreground = pg.graphics.Group(order=1)
 
 # Spawn car sprites
-cars = load.cars(20, window=window, batch=main_batch, group=foreground)
+cars = load.cars(4, window=window, batch=main_batch, group=foreground)
 # TEST: raycast lines
 lines = deque(maxlen=len(cars))
 
@@ -29,6 +29,7 @@ def update(dt):
     for obj in cars:
         obj.update(dt)
         obj.closest_car = all_closest_car[obj]
+        print(obj.closest_car)
         lines.append(
             pg.shapes.Line(obj.closest_car[0][0], obj.closest_car[0][1], obj.closest_car[1][0], obj.closest_car[1][1],
                            batch=main_batch, group=foreground))
