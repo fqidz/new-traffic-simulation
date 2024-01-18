@@ -17,6 +17,7 @@ def closest_car(car_list: list):
             xp = (x + 200 * math.cos(-math.radians(cur_car.rotation)))
             yp = (y + 200 * math.sin(-math.radians(cur_car.rotation)))
 
+            # things to use for angle between func
             cur_car_pos = (x, y)
             cur_car_p = (xp, yp)
             other_car_pos = (x2, y2)
@@ -27,7 +28,7 @@ def closest_car(car_list: list):
 
             # only return ray if other car is in front fov of the cur car
             ang_between = angle_between(cur_car_pos, cur_car_p, other_car_pos)
-            if -45 <= ang_between <= 45:
+            if -30 <= ang_between <= 30:
                 cur_to_other[ray] = ray_dist
             else:
                 cur_to_other[((float('inf'), float('inf')), (float('inf'), float('inf')))] = float('inf')

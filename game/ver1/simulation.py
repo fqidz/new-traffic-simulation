@@ -13,7 +13,7 @@ background = pg.graphics.Group(order=0)
 foreground = pg.graphics.Group(order=1)
 
 # Spawn car sprites
-cars = load.cars(50, window=window, batch=main_batch, group=foreground)
+cars = load.cars(20, window=window, batch=main_batch, group=foreground)
 # TEST: raycast lines
 lines = deque(maxlen=len(cars))
 
