@@ -26,36 +26,42 @@ class CarObject(pg.sprite.Sprite):
         self.velocity_magnitude = math.sqrt(self.velocity_x ** 2 + self.velocity_y ** 2)
 
     def intelligent_driver_model(self, desired_velocity, minimum_spacing, desired_time_headway, maximum_acceleration,
-                                 comfortable_braking_deceleration, delta=4):
+                                 comfortable_braking_deceleration, ):
         if self.closest_car_dist:
-            net_dist = self.closest_car_dist
+            closest_car_gap = self.closest_car_dist
         else:
-            net_dist = float('inf')
+            closest_car_gap = float('inf')
 
         if self.closest_car_vel:
             vel_diff = self.velocity_magnitude - self.closest_car_vel
         else:
             vel_diff = float('inf')
 
+        desired_gap = minimum_spacing + self.velocity_magnitude * desired_time_headway + (
+                (self.velocity_magnitude * vel_diff) /
+                (2 * math.sqrt(maximum_acceleration * comfortable_braking_deceleration)))
+
         # intelligent driver model formula
-        dynamic_net_distance = minimum_spacing + self.velocity_magnitude * desired_time_headway + (
-                (self.velocity_magnitude * vel_diff) / (
-                2 * math.sqrt(maximum_acceleration * comfortable_braking_deceleration)))
+        acceleration = (maximum_acceleration *
+                        (1 - (self.velocity_magnitude / desired_velocity) ** 4 - (desired_gap / closest_car_gap) ** 2))
 
-        acceleration = maximum_acceleration * (
-                1 - (self.velocity_magnitude / desired_velocity) ** delta - (dynamic_net_distance / net_dist) ** 2)
+        # print([desired_velocity, minimum_spacing, desired_time_headway, maximum_acceleration,
+        #        comfortable_braking_deceleration, closest_car_gap, vel_diff, self.velocity_magnitude,
+        #        desired_gap, acceleration])
 
-        print([desired_velocity, minimum_spacing, desired_time_headway, maximum_acceleration,
-               comfortable_braking_deceleration, delta, net_dist, vel_diff, self.velocity_magnitude,
-               dynamic_net_distance, acceleration])
-
-        return acceleration
+        if not math.isnan(acceleration):
+            return acceleration
 
     def update(self, dt):
         """This method should be called every frame."""
         self.velocity(self.speed)
+        accel = self.intelligent_driver_model(200, 0.001, 1, 1, 1)
+        if accel and (accel is not float('inf') or accel is not float('-inf')):
+            self.speed += accel / 60
+        else:
+            self.speed = 100
+        print([accel, self.speed])
 
-        self.intelligent_driver_model(10, 20, 1, 0.3, 0.3)
         # Update position according to velocity and time
         self.x += self.velocity_x * dt
         self.y += self.velocity_y * dt

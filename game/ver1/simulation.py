@@ -47,10 +47,10 @@ def update(dt):
             lines.append(pg.shapes.Line(obj.closest_car_ray[0][0], obj.closest_car_ray[0][1], obj.closest_car_ray[1][0],
                                         obj.closest_car_ray[1][1], batch=main_batch, group=foreground))
 
-        # delete car if out of screen
-        if obj.x < 0 or obj.x > window.width or obj.y < 0 or obj.y > window.height:
-            cars.pop(i)
-            obj.delete()
+        # # delete car if out of screen
+        # if obj.x < 0 or obj.x > window.width or obj.y < 0 or obj.y > window.height:
+        #     cars.pop(i)
+        #     obj.delete()
 
 
 if __name__ == "__main__":
