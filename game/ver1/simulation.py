@@ -47,16 +47,19 @@ def update(dt):
             lines.append(pg.shapes.Line(obj.closest_car_ray[0][0], obj.closest_car_ray[0][1], obj.closest_car_ray[1][0],
                                         obj.closest_car_ray[1][1], batch=main_batch, group=foreground))
 
-        # # delete car if out of screen
-        # if obj.x < 0 or obj.x > window.width or obj.y < 0 or obj.y > window.height:
-        #     cars.pop(i)
-        #     obj.delete()
+        # delete car if out of screen
+        if (obj.x < (0 - obj.width / 2) or
+                obj.x > (window.width + obj.width / 2) or
+                obj.y < (0 - obj.height / 2) or
+                obj.y > (window.height + obj.height / 2)):
+            cars.pop(i)
+            obj.delete()
 
 
 if __name__ == "__main__":
     # Update the game 120 times per second
     pg.clock.schedule_interval(update, 1 / 120.0)
-    pg.clock.schedule_interval(spawn_cars, 0.5)
+    pg.clock.schedule_interval(spawn_cars, 3)
 
     # Tell pyglet to do its thing
     pg.app.run()

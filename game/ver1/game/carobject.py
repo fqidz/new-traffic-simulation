@@ -3,6 +3,15 @@ import random
 
 import pyglet as pg
 
+# TODO: Fix proportions/scale/ratio to be same as real life
+# AVERAGE CAR DIMENSIONS
+# Length: 4.48m
+# Width:  1.76m
+#
+# BAHRAIN ROAD DIMENSIONS
+# Lane Width:    3.00m
+# 4 Lanes Width: 12.00m
+
 
 class CarObject(pg.sprite.Sprite):
     """A sprite with physical properties such as velocity"""
@@ -25,6 +34,7 @@ class CarObject(pg.sprite.Sprite):
         self.velocity_y = speed * math.sin(-math.radians(self.rotation))
         self.velocity_magnitude = math.sqrt(self.velocity_x ** 2 + self.velocity_y ** 2)
 
+    # TODO: Normalize pixel values to m/s^2, meters, and shit
     def intelligent_driver_model(self, desired_velocity, minimum_spacing, desired_time_headway, maximum_acceleration,
                                  comfortable_braking_deceleration, ):
         if self.closest_car_dist:
@@ -45,19 +55,19 @@ class CarObject(pg.sprite.Sprite):
         acceleration = (maximum_acceleration *
                         (1 - (self.velocity_magnitude / desired_velocity) ** 4 - (desired_gap / closest_car_gap) ** 2))
 
-        # print([desired_velocity, minimum_spacing, desired_time_headway, maximum_acceleration,
-        #        comfortable_braking_deceleration, closest_car_gap, vel_diff, self.velocity_magnitude,
-        #        desired_gap, acceleration])
+        print([desired_velocity, minimum_spacing, desired_time_headway, maximum_acceleration,
+               comfortable_braking_deceleration, closest_car_gap, vel_diff, self.velocity_magnitude,
+               desired_gap, acceleration])
 
-        if not math.isnan(acceleration):
+        if not math.isnan(acceleration) and acceleration != float('inf') and acceleration != float('-inf'):
             return acceleration
 
     def update(self, dt):
         """This method should be called every frame."""
         self.velocity(self.speed)
-        accel = self.intelligent_driver_model(200, 0.001, 1, 1, 1)
+        accel = self.intelligent_driver_model(200, 10, 1, 1, 1)
         if accel and (accel is not float('inf') or accel is not float('-inf')):
-            self.speed += accel / 60
+            self.speed += accel / 120
         else:
             self.speed = 100
         print([accel, self.speed])
