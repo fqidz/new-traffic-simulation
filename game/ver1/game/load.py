@@ -9,7 +9,7 @@ def cars(num_cars, window, batch=None, group=None):
     cars_list = []
     for i in range(num_cars):
         # rotate random 90 degrees
-        rot = random.randint(0, 1) * 180
+        rot = random.randint(0, 3) * 90
 
         # position car based on rotation
         if rot == 0:
