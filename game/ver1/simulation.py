@@ -16,7 +16,7 @@ foreground = pg.graphics.Group(order=1)
 cars = []
 
 # TEST
-lines = deque(maxlen=100)
+lines = deque(maxlen=50)
 
 
 def spawn_cars(dt):
