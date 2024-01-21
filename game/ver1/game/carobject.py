@@ -3,7 +3,7 @@ import random
 
 import pyglet as pg
 
-# TODO: Fix proportions/scale/ratio to be same as real life
+# Real life dimensions / Proportions
 # 1 m    =  10 px
 # 10 px  =  1 m
 # 
@@ -75,7 +75,7 @@ class CarObject(pg.sprite.Sprite):
     def update(self, dt):
         """This method should be called every frame."""
         self.velocity(self.speed)
-        accel = self.intelligent_driver_model(8.0, 6.0, 1.0, 3.0, 1.5)
+        accel = self.intelligent_driver_model(8.0, 5.0, 1.0, 3.0, 1.5)
         if accel and (accel is not float('inf') or accel is not float('-inf')):
             # translate from meters to pixel; also divide by 60 fps
             self.speed += (accel * 10) / 60.0
