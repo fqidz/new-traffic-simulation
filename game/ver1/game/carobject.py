@@ -81,6 +81,7 @@ class CarObject(pg.sprite.Sprite):
         if (not math.isnan(acceleration) and
                 acceleration != INF and
                 acceleration != INF):
+            # limit acceleration to 20
             if acceleration > 20:
                 return 20
             elif acceleration < -20:
@@ -95,7 +96,7 @@ class CarObject(pg.sprite.Sprite):
         self.velocity(self.speed)
 
         # input is in m/s and meters
-        accel = self.intelligent_driver_model(8.0, 5.0, 1.0, 5.0, 1.5)
+        accel = self.intelligent_driver_model(8.0, 4.0, 0.5, 5.0, 1.5)
 
         # TODO: prevent cars from going backwards
         if accel:

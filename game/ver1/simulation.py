@@ -44,8 +44,8 @@ def update(dt):
             obj.closest_car_dist = closest_car_dist
             obj.closest_car_vel = closest_car_vel
 
-            lines.append(pg.shapes.Line(obj.closest_car_ray[0][0], obj.closest_car_ray[0][1], obj.closest_car_ray[1][0],
-                                        obj.closest_car_ray[1][1], batch=main_batch, group=foreground))
+            # lines.append(pg.shapes.Line(obj.closest_car_ray[0][0], obj.closest_car_ray[0][1], obj.closest_car_ray[1][0],
+            #                             obj.closest_car_ray[1][1], batch=main_batch, group=foreground))
 
         # delete car if out of screen
         if (obj.x < (0 - obj.width / 2) or
