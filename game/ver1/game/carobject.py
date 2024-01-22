@@ -37,6 +37,7 @@ class CarObject(pg.sprite.Sprite):
         self.closest_car_vel = None
 
     def velocity(self, speed):
+        # Update velocity according to speed and current rotation
         self.velocity_x = speed * math.cos(-math.radians(self.rotation))
         self.velocity_y = speed * math.sin(-math.radians(self.rotation))
         self.velocity_magnitude = math.sqrt(self.velocity_x ** 2 + self.velocity_y ** 2)
@@ -44,7 +45,7 @@ class CarObject(pg.sprite.Sprite):
     # TODO: Normalize pixel values to m/s^2, meters, and shit (SI units)
     def intelligent_driver_model(self, desired_velocity, minimum_spacing, desired_time_headway, maximum_acceleration,
                                  comfortable_braking_deceleration):
-        """Takes in SI units (m/s, m) and outputs acceleration with same units (m/s^2, m)
+        """Takes in SI units (m/s, m) and outputs acceleration with SI units (m/s^2, m)
         based off of: https://youtu.be/4RxqKvi8Nys?t=3803"""
         
         # convert pixel values into SI units
@@ -88,10 +89,15 @@ class CarObject(pg.sprite.Sprite):
         
         # TODO: handle cars going backwards
         if accel:
+            # convert SI units to pixels and divide by framerate
             self.speed += (accel * RATIO) / 60.0
+            if self.speed < 0.0:
+                pass
+                
 
         # Update position according to velocity and time
         self.x += self.velocity_x * dt
         self.y += self.velocity_y * dt
 
+        # Update rotation randomly according to time
         self.rotation += random.randint(-20, 20) * dt
