@@ -17,6 +17,7 @@ import pyglet as pg
 
 RATIO = 10
 INF = float('inf')
+NAN = float('Nan')
 
 class CarObject(pg.sprite.Sprite):
     """A sprite with physical properties such as velocity"""
@@ -51,16 +52,16 @@ class CarObject(pg.sprite.Sprite):
         # convert pixel values into SI units
         own_vel_mag = self.velocity_magnitude / RATIO
         
-        if self.closest_car_dist:
+        if self.closest_car_dist and not math.isinf(self.closest_car_dist):
             closest_car_gap = self.closest_car_dist / RATIO
         else:
-            closest_car_gap = INF
+            closest_car_gap = 1000 / RATIO
 
-        if self.closest_car_vel:
+        if self.closest_car_vel and not math.isinf(self.closest_car_vel):
             vel_diff = self.velocity_magnitude - self.closest_car_vel
             vel_diff = vel_diff / RATIO
         else:
-            vel_diff = INF
+            vel_diff = 0
 
         # dynamic desired gap
         desired_gap = minimum_spacing + own_vel_mag * desired_time_headway + (
@@ -71,29 +72,25 @@ class CarObject(pg.sprite.Sprite):
         acceleration = (maximum_acceleration *
                         (1 - (own_vel_mag / desired_velocity) ** 4 - (desired_gap / closest_car_gap) ** 2))
 
-        # print([desired_velocity, minimum_spacing, desired_time_headway, maximum_acceleration,
-        #        comfortable_braking_deceleration, closest_car_gap, vel_diff, own_vel_mag,
-        #        desired_gap, acceleration])
+        print([closest_car_gap, vel_diff, own_vel_mag, desired_gap, acceleration])
 
-        # handles when car doesn't have closest car
+        # handles when car doesn't have a closest car
         if not math.isnan(acceleration) and acceleration != INF and acceleration != INF:
             return acceleration
 
     def update(self, dt):
         """This method should be called every frame."""
+
         # calculate velocity every update
         self.velocity(self.speed)
-        
+
         # input is in m/s and meters
-        accel = self.intelligent_driver_model(8.0, 5.0, 1.0, 3.0, 1.5)
-        
+        accel = self.intelligent_driver_model(8.0, 5.0, 1.0, 5.0, 1.5)
+
         # TODO: handle cars going backwards
         if accel:
             # convert SI units to pixels and divide by framerate
             self.speed += (accel * RATIO) / 60.0
-            if self.speed < 0.0:
-                pass
-                
 
         # Update position according to velocity and time
         self.x += self.velocity_x * dt
