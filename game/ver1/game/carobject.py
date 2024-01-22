@@ -25,7 +25,10 @@ class CarObject(pg.sprite.Sprite):
     def __init__(self, *args, **kwargs):
         super(CarObject, self).__init__(*args, **kwargs)
 
-        # 8 m/s +- 2 m/s; times ratio to translate it to px
+        self.lane = None
+
+        # 8 m/s +- 2 m/s
+        # multiplied by RATIO to translate it to px
         self.speed = 8 * RATIO + (random.random() * (2 * RATIO))
 
         # init velocity
@@ -48,10 +51,10 @@ class CarObject(pg.sprite.Sprite):
                                  comfortable_braking_deceleration):
         """Takes in SI units (m/s, m) and outputs acceleration with SI units (m/s^2, m)
         based off of: https://youtu.be/4RxqKvi8Nys?t=3803"""
-        
+
         # convert pixel values into SI units
         own_vel_mag = self.velocity_magnitude / RATIO
-        
+
         if self.closest_car_dist and not math.isinf(self.closest_car_dist):
             closest_car_gap = self.closest_car_dist / RATIO
         else:
@@ -72,11 +75,18 @@ class CarObject(pg.sprite.Sprite):
         acceleration = (maximum_acceleration *
                         (1 - (own_vel_mag / desired_velocity) ** 4 - (desired_gap / closest_car_gap) ** 2))
 
-        print([closest_car_gap, vel_diff, own_vel_mag, desired_gap, acceleration])
+        # print([closest_car_gap, vel_diff, own_vel_mag, desired_gap, acceleration])
 
         # handles when car doesn't have a closest car
-        if not math.isnan(acceleration) and acceleration != INF and acceleration != INF:
-            return acceleration
+        if (not math.isnan(acceleration) and
+                acceleration != INF and
+                acceleration != INF):
+            if acceleration > 20:
+                return 20
+            elif acceleration < -20:
+                return -20
+            else:
+                return acceleration
 
     def update(self, dt):
         """This method should be called every frame."""
@@ -87,7 +97,7 @@ class CarObject(pg.sprite.Sprite):
         # input is in m/s and meters
         accel = self.intelligent_driver_model(8.0, 5.0, 1.0, 5.0, 1.5)
 
-        # TODO: handle cars going backwards
+        # TODO: prevent cars from going backwards
         if accel:
             # convert SI units to pixels and divide by framerate
             self.speed += (accel * RATIO) / 60.0
@@ -96,5 +106,5 @@ class CarObject(pg.sprite.Sprite):
         self.x += self.velocity_x * dt
         self.y += self.velocity_y * dt
 
-        # Update rotation randomly according to time
-        self.rotation += random.randint(-20, 20) * dt
+        # # Update rotation randomly according to time
+        # self.rotation += random.randint(-20, 20) * dt
