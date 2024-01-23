@@ -4,6 +4,7 @@ import pyglet as pg
 
 
 def closest_car(car_list: list):
+    # TODO: better detection, maybe
     car_rays = {}
     for i, cur_car in enumerate(car_list):
         other_cars = car_list.copy()

@@ -34,13 +34,14 @@ def on_draw():
 @window.event
 def on_mouse_press(x, y, button, modifiers):
     # printing some message
-    print(f"Mouse Button {button} pressed in [{x}, {y}]")
     for obj in cars:
         col_check = behavior.col_check(x, y, obj)
         if col_check:
             if obj.run:
+                print(f"car at {[x, y]} stopped")
                 obj.run = False
             elif not obj.run:
+                print(f"car at {[x, y]} continued")
                 obj.run = True
 
 
@@ -74,6 +75,6 @@ if __name__ == "__main__":
     # Update the game 120 times per second
     pg.clock.schedule_interval(update, 1 / 120.0)
     # Spawn cars every interval
-    pg.clock.schedule_interval(spawn_cars, 0.3)
+    pg.clock.schedule_interval(spawn_cars, 0.5)
 
     pg.app.run()
