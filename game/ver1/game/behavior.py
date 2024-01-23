@@ -1,5 +1,7 @@
 import math
 
+import pyglet as pg
+
 
 def closest_car(car_list: list):
     car_rays = {}
@@ -32,11 +34,12 @@ def closest_car(car_list: list):
                 cur_to_other[ray] = [ray_dist, next_car.velocity_magnitude]
             else:
                 # else set ray to inf so ray will not get cast
-                cur_to_other[((float('inf'), float('inf')), (float('inf'), float('inf')))] = [float('inf'), float('inf')]
+                cur_to_other[((float('inf'), float('inf')), (float('inf'), float('inf')))] = [float('inf'),
+                                                                                              float('inf')]
 
             # get the ray for closest car
             min_ray = min(cur_to_other, key=cur_to_other.get)
-            
+
             # output the min ray and the corresponding speed of the next car
             car_rays[cur_car] = [min_ray, cur_to_other[min_ray]]
 
@@ -60,3 +63,16 @@ def angle_between(o, p1, p2):
         angle = math.radians(180)
 
     return math.degrees(angle)
+
+
+def col_check(x, y, obj: pg.sprite.Sprite):
+    left = obj.x - obj.width / 2
+    right = obj.x + obj.width / 2
+    top = obj.y + obj.height / 2
+    bottom = obj.y - obj.height / 2
+
+    if (right > x > left and
+            top > y > bottom):
+        return True
+    else:
+        return False

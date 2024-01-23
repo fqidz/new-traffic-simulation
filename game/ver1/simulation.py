@@ -31,6 +31,15 @@ def on_draw():
     main_batch.draw()
 
 
+@window.event
+def on_mouse_press(x, y, button, modifiers):
+    # printing some message
+    print(f"Mouse Button {button} pressed in [{x}, {y}]")
+    for obj in cars:
+        col_check = behavior.col_check(x, y, obj)
+        if col_check:
+            print(True)
+
 def update(dt):
     all_closest_car = behavior.closest_car(cars)
     for i, obj in enumerate(cars):
