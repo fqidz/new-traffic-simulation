@@ -65,6 +65,7 @@ def angle_between(o, p1, p2):
     return math.degrees(angle)
 
 
+# TODO: adjust for rotation
 def col_check(x, y, obj: pg.sprite.Sprite):
     left = obj.x - obj.width / 2
     right = obj.x + obj.width / 2

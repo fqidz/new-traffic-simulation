@@ -1,5 +1,4 @@
 import pyglet as pg
-from typing import Dict
 
 
 def road(window: pg.window.Window):

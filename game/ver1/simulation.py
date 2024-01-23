@@ -38,7 +38,11 @@ def on_mouse_press(x, y, button, modifiers):
     for obj in cars:
         col_check = behavior.col_check(x, y, obj)
         if col_check:
-            print(True)
+            if obj.run:
+                obj.run = False
+            elif not obj.run:
+                obj.run = True
+
 
 def update(dt):
     all_closest_car = behavior.closest_car(cars)
@@ -53,7 +57,8 @@ def update(dt):
             obj.closest_car_dist = closest_car_dist
             obj.closest_car_vel = closest_car_vel
 
-            # lines.append(pg.shapes.Line(obj.closest_car_ray[0][0], obj.closest_car_ray[0][1], obj.closest_car_ray[1][0],
+            # lines.append(pg.shapes.Line(obj.closest_car_ray[0][0], obj.closest_car_ray[0][1],
+            # obj.closest_car_ray[1][0],
             #                             obj.closest_car_ray[1][1], batch=main_batch, group=foreground))
 
         # delete car if out of screen
@@ -68,7 +73,7 @@ def update(dt):
 if __name__ == "__main__":
     # Update the game 120 times per second
     pg.clock.schedule_interval(update, 1 / 120.0)
+    # Spawn cars every interval
     pg.clock.schedule_interval(spawn_cars, 0.3)
 
-    # Tell pyglet to do its thing
     pg.app.run()

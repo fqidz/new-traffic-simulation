@@ -25,6 +25,7 @@ class CarObject(pg.sprite.Sprite):
     def __init__(self, *args, **kwargs):
         super(CarObject, self).__init__(*args, **kwargs)
 
+        self.run = True
         self.lane = None
 
         # 8 m/s +- 2 m/s
@@ -96,12 +97,14 @@ class CarObject(pg.sprite.Sprite):
         self.velocity(self.speed)
 
         # input is in m/s and meters
-        accel = self.intelligent_driver_model(8.0, 4.0, 0.5, 5.0, 1.5)
+        accel = self.intelligent_driver_model(8.0, 6.0, 0.5, 3.0, 3.0)
 
         # TODO: prevent cars from going backwards
-        if accel:
+        if accel and self.run:
             # convert SI units to pixels and divide by framerate
             self.speed += (accel * RATIO) / 60.0
+        elif not self.run:
+            self.speed *= 0.99
 
         # Update position according to velocity and time
         self.x += self.velocity_x * dt
