@@ -20,7 +20,7 @@ lines = deque(maxlen=30)
 
 
 def spawn_cars(dt):
-    spawn_cars_list = load.cars(1, window=window, batch=main_batch, group=foreground)
+    spawn_cars_list = load.cars(2, window=window, batch=main_batch, group=foreground)
     for car in spawn_cars_list:
         cars.append(car)
 
@@ -47,6 +47,7 @@ def on_mouse_press(x, y, button, modifiers):
 
 def update(dt):
     all_closest_car = behavior.closest_car(cars)
+
     print(len(cars))
     for i, obj in enumerate(cars):
         obj.update(dt)
@@ -77,6 +78,6 @@ if __name__ == "__main__":
     # Update the game 120 times per second
     pg.clock.schedule_interval(update, 1 / 120.0)
     # Spawn cars every interval
-    pg.clock.schedule_interval(spawn_cars, 0.5)
+    pg.clock.schedule_interval(spawn_cars, 1)
 
     pg.app.run()

@@ -19,6 +19,7 @@ RATIO = 10
 INF = float('inf')
 NAN = float('Nan')
 
+
 class CarObject(pg.sprite.Sprite):
     """A sprite with physical properties such as velocity"""
 
@@ -92,6 +93,7 @@ class CarObject(pg.sprite.Sprite):
 
     def update(self, dt):
         """This method should be called every frame."""
+
         # calculate velocity every update
         self.velocity(self.speed)
 
@@ -99,12 +101,11 @@ class CarObject(pg.sprite.Sprite):
         accel = self.intelligent_driver_model(8.0, 6.0, 0.5, 3.0, 3.0)
 
         # TODO: prevent cars from going backwards
-        if accel:
-            if self.run:
-                # convert SI units to pixels and divide by framerate
-                self.speed += (accel * RATIO) / 60.0
-            else:
-                self.speed *= 0.99
+        if accel and self.run:
+            # convert SI units to pixels and divide by framerate
+            self.speed += (accel * RATIO) / 60.0
+        elif not self.run:
+            self.speed *= 0.99
 
         # Update position according to velocity and time
         self.x += self.velocity_x * dt
