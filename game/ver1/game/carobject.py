@@ -92,7 +92,6 @@ class CarObject(pg.sprite.Sprite):
 
     def update(self, dt):
         """This method should be called every frame."""
-        print(self.velocity_magnitude)
         # calculate velocity every update
         self.velocity(self.speed)
 

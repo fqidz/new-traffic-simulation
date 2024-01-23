@@ -15,8 +15,8 @@ foreground = pg.graphics.Group(order=1)
 # Spawn car sprites
 cars = []
 
-# TEST
-lines = deque(maxlen=50)
+# TEST for lines
+lines = deque(maxlen=30)
 
 
 def spawn_cars(dt):
@@ -47,6 +47,7 @@ def on_mouse_press(x, y, button, modifiers):
 
 def update(dt):
     all_closest_car = behavior.closest_car(cars)
+    print(len(cars))
     for i, obj in enumerate(cars):
         obj.update(dt)
 
@@ -58,9 +59,10 @@ def update(dt):
             obj.closest_car_dist = closest_car_dist
             obj.closest_car_vel = closest_car_vel
 
-            # lines.append(pg.shapes.Line(obj.closest_car_ray[0][0], obj.closest_car_ray[0][1],
-            # obj.closest_car_ray[1][0],
-            #                             obj.closest_car_ray[1][1], batch=main_batch, group=foreground))
+            # raycast line test
+            lines.append(pg.shapes.Line(obj.closest_car_ray[0][0], obj.closest_car_ray[0][1], obj.closest_car_ray[1][0],
+                                        obj.closest_car_ray[1][1], batch=main_batch, group=foreground,
+                                        color=(255, 255, 255, 50)))
 
         # delete car if out of screen
         if (obj.x < (0 - obj.width / 2) or
