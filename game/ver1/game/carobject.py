@@ -48,17 +48,10 @@ class CarObject(pg.sprite.Sprite):
         self.velocity_y = speed * math.sin(-math.radians(self.rotation))
         self.velocity_magnitude = math.sqrt(self.velocity_x ** 2 + self.velocity_y ** 2)
 
-    def is_forward(self):
-        x = self.x
-        y = self.y
-        xp = (x + 200 * math.cos(-math.radians(self.rotation)))
-        yp = (y + 200 * math.sin(-math.radians(self.rotation)))
-
     def intelligent_driver_model(self, desired_velocity, minimum_spacing, desired_time_headway, maximum_acceleration,
                                  comfortable_braking_deceleration):
         """Takes in SI units (m/s, m) and outputs acceleration with SI units (m/s^2, m)
         based off of: https://youtu.be/4RxqKvi8Nys?t=3803
-
         """
 
         # convert pixel values into SI units

@@ -81,6 +81,6 @@ if __name__ == "__main__":
     # Update the game 120 times per second
     pg.clock.schedule_interval(update, 1 / 120.0)
     # Spawn cars every interval
-    pg.clock.schedule_interval(spawn_cars, 1)
+    pg.clock.schedule_interval(spawn_cars, 0.5)
 
     pg.app.run()
