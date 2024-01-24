@@ -1,6 +1,8 @@
 import math
 import random
 
+from . import behavior
+
 import pyglet as pg
 
 # Real life dimensions / Proportions
@@ -47,6 +49,12 @@ class CarObject(pg.sprite.Sprite):
         self.velocity_x = speed * math.cos(-math.radians(self.rotation))
         self.velocity_y = speed * math.sin(-math.radians(self.rotation))
         self.velocity_magnitude = math.sqrt(self.velocity_x ** 2 + self.velocity_y ** 2)
+
+    def is_forward(self):
+        x = self.x
+        y = self.y
+        xp = (x + 200 * math.cos(-math.radians(self.rotation)))
+        yp = (y + 200 * math.sin(-math.radians(self.rotation)))
 
     # TODO: Normalize pixel values to m/s^2, meters, and shit (SI units)
     def intelligent_driver_model(self, desired_velocity, minimum_spacing, desired_time_headway, maximum_acceleration,
@@ -95,12 +103,11 @@ class CarObject(pg.sprite.Sprite):
         """This method should be called every frame."""
 
         # calculate velocity every update
-        self.velocity(self.speed)
+        self.velocity(max(0.0, self.speed))
 
         # input is in m/s and meters
-        accel = self.intelligent_driver_model(8.0, 6.0, 0.5, 3.0, 3.0)
+        accel = self.intelligent_driver_model(9.0, 2.0, 1.5, 2.5, 2.0)
 
-        # TODO: prevent cars from going backwards
         if accel and self.run:
             # convert SI units to pixels and divide by framerate
             self.speed += (accel * RATIO) / 60.0

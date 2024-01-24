@@ -11,10 +11,10 @@ def closest_car(car_list: list):
         other_cars.pop(i)
         cur_to_other = {}
         for next_car in other_cars:
-            x = cur_car.x  # + cur_car.width / 2 * math.cos(-math.radians(cur_car.rotation))
-            y = cur_car.y  # + (cur_car.height + 2) * math.sin(-math.radians(cur_car.rotation))
-            x2 = next_car.x  # - next_car.width / 2 * math.cos(-math.radians(cur_car.rotation))
-            y2 = next_car.y  # - (next_car.height + 2) * math.sin(-math.radians(cur_car.rotation))
+            x = cur_car.x + cur_car.width / 2 * math.cos(-math.radians(cur_car.rotation))
+            y = cur_car.y + (cur_car.height + 2) * math.sin(-math.radians(cur_car.rotation))
+            x2 = next_car.x - next_car.width / 2 * math.cos(-math.radians(next_car.rotation))
+            y2 = next_car.y - (next_car.height + 2) * math.sin(-math.radians(next_car.rotation))
 
             # cast straight ray in front of cur car to use to get fov angle
             xp = (x + 200 * math.cos(-math.radians(cur_car.rotation)))
