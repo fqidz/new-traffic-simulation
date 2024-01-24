@@ -31,7 +31,7 @@ def closest_car(car_list: list):
 
             # only return ray if other car is in front fov of the cur car
             ang_between = angle_between(cur_car_pos, cur_car_p, other_car_pos)
-            if -10 <= ang_between <= 10:
+            if -1 <= ang_between <= 1:
                 cur_to_other[ray] = [ray_dist, next_car.velocity_magnitude]
             else:
                 # else set ray to inf so ray will not get cast

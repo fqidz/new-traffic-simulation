@@ -1,16 +1,28 @@
 import random
+import pyglet as pg
 
 from . import resources, carobject, roads
 
 
-def cars(num_cars, window, batch=None, group=None):
-    """Generate asteroid objects with random positions and velocities,
-    not close to the player"""
+def road(x, y, batch=None, group=None):
+    road_list = []
+    vert_road = pg.sprite.Sprite(img=resources.road_image, x=x, y=y, batch=batch, group=group)
+    horz_road = pg.sprite.Sprite(img=resources.road_image, x=x, y=y, batch=batch, group=group)
+
+    horz_road.rotation = 90
+
+    road_list.append(vert_road)
+    road_list.append(horz_road)
+
+    return road_list
+
+
+def cars(num_cars, batch=None, group=None):
+    """Generate car objects with random lane spawn"""
     cars_list = []
-    lane_locs = roads.road(window)
     for i in range(num_cars):
         # choose random lane
-        car_lane_name, car_lane_loc = random.choice(list(lane_locs.items()))
+        car_lane_name, car_lane_loc = random.choice(list(roads.spawn_nodes.items()))
         car_x = car_lane_loc[0]
         car_y = car_lane_loc[1]
 
@@ -34,4 +46,3 @@ def cars(num_cars, window, batch=None, group=None):
 
         cars_list.append(new_car)
     return cars_list
-

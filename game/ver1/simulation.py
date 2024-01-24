@@ -2,25 +2,28 @@ from collections import deque
 
 import pyglet as pg
 
-from game import behavior, load
+from game import behavior, load, roads
 
 # Set up a window
 window = pg.window.Window(1000, 1000)
 
 # Set up batches
 main_batch = pg.graphics.Batch()
+# background is guaranteed to be drawn before the foreground
 background = pg.graphics.Group(order=0)
 foreground = pg.graphics.Group(order=1)
 
-# Spawn car sprites
+# init lists to be drawn later
 cars = []
+# TODO: switch out for full background image
+road = load.road(500, 500, batch=main_batch, group=background)
 
 # TEST for lines
 lines = deque(maxlen=30)
 
 
 def spawn_cars(dt):
-    spawn_cars_list = load.cars(2, window=window, batch=main_batch, group=foreground)
+    spawn_cars_list = load.cars(2, batch=main_batch, group=foreground)
     for car in spawn_cars_list:
         cars.append(car)
 

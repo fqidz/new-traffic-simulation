@@ -1,8 +1,6 @@
 import math
 import random
 
-from . import behavior
-
 import pyglet as pg
 
 # Real life dimensions / Proportions
@@ -31,9 +29,9 @@ class CarObject(pg.sprite.Sprite):
         self.run = True
         self.lane = None
 
-        # 8 m/s +- 2 m/s
+        # 10.0 m/s +- 2 m/s
         # multiplied by RATIO to translate it to px
-        self.speed = 8 * RATIO + (random.random() * (2 * RATIO))
+        self.speed = 10.0 * RATIO + (random.random() * (2 * RATIO))
 
         # init velocity
         self.velocity_x, self.velocity_y = 0.0, 0.0
@@ -56,11 +54,12 @@ class CarObject(pg.sprite.Sprite):
         xp = (x + 200 * math.cos(-math.radians(self.rotation)))
         yp = (y + 200 * math.sin(-math.radians(self.rotation)))
 
-    # TODO: Normalize pixel values to m/s^2, meters, and shit (SI units)
     def intelligent_driver_model(self, desired_velocity, minimum_spacing, desired_time_headway, maximum_acceleration,
                                  comfortable_braking_deceleration):
         """Takes in SI units (m/s, m) and outputs acceleration with SI units (m/s^2, m)
-        based off of: https://youtu.be/4RxqKvi8Nys?t=3803"""
+        based off of: https://youtu.be/4RxqKvi8Nys?t=3803
+
+        """
 
         # convert pixel values into SI units
         own_vel_mag = self.velocity_magnitude / RATIO
@@ -103,10 +102,11 @@ class CarObject(pg.sprite.Sprite):
         """This method should be called every frame."""
 
         # calculate velocity every update
+        # max() to prevent cars from going backwards
         self.velocity(max(0.0, self.speed))
 
         # input is in m/s and meters
-        accel = self.intelligent_driver_model(9.0, 2.0, 1.5, 2.5, 2.0)
+        accel = self.intelligent_driver_model(33.3, 2.0, 1.5, 0.73, 1.67)
 
         if accel and self.run:
             # convert SI units to pixels and divide by framerate
