@@ -30,7 +30,7 @@ cars_per_lane = {"right_left_lane": [],
 road = load.road(500, 500, batch=main_batch, group=background)
 
 # TEST for lines
-lines = deque(maxlen=2)
+lines = deque(maxlen=30)
 
 
 def spawn_cars(dt):
@@ -109,6 +109,6 @@ if __name__ == "__main__":
     # Update the game 120 times per second
     pg.clock.schedule_interval(update, 1 / 120.0)
     # Spawn cars every interval
-    pg.clock.schedule_interval(spawn_cars, 5)
+    pg.clock.schedule_interval(spawn_cars, 1)
 
     pg.app.run()
