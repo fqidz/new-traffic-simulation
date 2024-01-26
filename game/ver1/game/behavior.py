@@ -47,7 +47,6 @@ def closest_car(car_list: dict):
                     cur_to_other[((float('inf'), float('inf')), (float('inf'), float('inf')))] = [float('inf'),
                                                                                                   float('inf')]
 
-
                 # get the ray for closest car
                 min_ray = min(cur_to_other, key=cur_to_other.get)
 
