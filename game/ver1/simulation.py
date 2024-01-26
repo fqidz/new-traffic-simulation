@@ -30,7 +30,7 @@ cars_per_lane = {"right_left_lane": [],
 road = load.road(500, 500, batch=main_batch, group=background)
 
 # TEST for lines
-lines = deque(maxlen=30)
+lines = deque(maxlen=2)
 
 
 def spawn_cars(dt):
@@ -70,26 +70,38 @@ def update(dt):
     for i, obj in enumerate(cars):
         obj.update(dt)
 
-        if len(cars) > 1 and all_closest_car:
-            min_ray, (closest_car_dist, closest_car_vel) = all_closest_car[obj]
+        if len(cars) > 1:
+            try:
+                min_ray, (closest_car_dist, closest_car_vel) = all_closest_car[obj]
 
-            # for idm data
-            obj.closest_car_ray = min_ray
-            obj.closest_car_dist = closest_car_dist
-            obj.closest_car_vel = closest_car_vel
+                # for idm data
+                obj.closest_car_ray = min_ray
+                obj.closest_car_dist = closest_car_dist
+                obj.closest_car_vel = closest_car_vel
 
-            # raycast line test
-            lines.append(pg.shapes.Line(obj.closest_car_ray[0][0], obj.closest_car_ray[0][1], obj.closest_car_ray[1][0],
-                                        obj.closest_car_ray[1][1], batch=main_batch, group=foreground,
-                                        color=(255, 255, 255, 50)))
+                # raycast line test
+                lines.append(
+                    pg.shapes.Line(obj.closest_car_ray[0][0], obj.closest_car_ray[0][1], obj.closest_car_ray[1][0],
+                                   obj.closest_car_ray[1][1], batch=main_batch, group=foreground,
+                                   color=(255, 255, 255, 50)))
+            except KeyError:
+                pass
 
         # delete car if out of screen
         if (obj.x < (0 - obj.width / 2) or
                 obj.x > (window.width + obj.width / 2) or
                 obj.y < (0 - obj.height / 2) or
                 obj.y > (window.height + obj.height / 2)):
+            # pop from car list
             cars.pop(i)
-            cars_per_lane.
+            # remove from cars_per_lane dict
+            for a in cars_per_lane.values():
+                try:
+                    a.remove(obj)
+                except ValueError:
+                    pass
+
+            # actually delete the car
             obj.delete()
 
 
@@ -97,6 +109,6 @@ if __name__ == "__main__":
     # Update the game 120 times per second
     pg.clock.schedule_interval(update, 1 / 120.0)
     # Spawn cars every interval
-    pg.clock.schedule_interval(spawn_cars, 0.5)
+    pg.clock.schedule_interval(spawn_cars, 5)
 
     pg.app.run()
