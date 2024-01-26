@@ -1,8 +1,9 @@
 from collections import deque
 
 import pyglet as pg
+import itertools
 
-from game import behavior, load, roads
+from game import behavior, load
 
 # Set up a window
 window = pg.window.Window(1000, 1000)
@@ -15,6 +16,16 @@ foreground = pg.graphics.Group(order=1)
 
 # init lists to be drawn later
 cars = []
+# each lane will have a list of cars that are there
+cars_per_lane = {"right_left_lane": [],
+                 "right_right_lane": [],
+                 "top_left_lane": [],
+                 "top_right_lane": [],
+                 "left_left_lane": [],
+                 "left_right_lane": [],
+                 "bottom_left_lane": [],
+                 "bottom_right_lane": []}
+
 # TODO: switch out for full background image
 road = load.road(500, 500, batch=main_batch, group=background)
 
@@ -25,7 +36,7 @@ lines = deque(maxlen=30)
 def spawn_cars(dt):
     spawn_cars_list = load.cars(2, batch=main_batch, group=foreground)
     for car in spawn_cars_list:
-        cars.append(car)
+        cars_per_lane[car.lane_name].append(car)
 
 
 @window.event
@@ -36,7 +47,7 @@ def on_draw():
 
 @window.event
 def on_mouse_press(x, y, button, modifiers):
-    # printing some message
+    # stop or start car on mouse press
     for obj in cars:
         col_check = behavior.col_check(x, y, obj)
         if col_check:
@@ -49,16 +60,20 @@ def on_mouse_press(x, y, button, modifiers):
 
 
 def update(dt):
-    all_closest_car = behavior.closest_car(cars)
+    # unpack dict to get all items and put it into a single list
+    # not that great implementation ik
+    global cars
+    cars = list(itertools.chain(*cars_per_lane.values()))
+    all_closest_car = behavior.closest_car(cars_per_lane)
 
-    print(len(cars))
+    # print(len(cars))
     for i, obj in enumerate(cars):
         obj.update(dt)
 
-        # for idm data
-        if len(cars) > 1:
+        if len(cars) > 1 and all_closest_car:
             min_ray, (closest_car_dist, closest_car_vel) = all_closest_car[obj]
 
+            # for idm data
             obj.closest_car_ray = min_ray
             obj.closest_car_dist = closest_car_dist
             obj.closest_car_vel = closest_car_vel
@@ -74,6 +89,7 @@ def update(dt):
                 obj.y < (0 - obj.height / 2) or
                 obj.y > (window.height + obj.height / 2)):
             cars.pop(i)
+            cars_per_lane.
             obj.delete()
 
 

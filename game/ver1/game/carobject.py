@@ -27,7 +27,8 @@ class CarObject(pg.sprite.Sprite):
         super(CarObject, self).__init__(*args, **kwargs)
 
         self.run = True
-        self.lane = None
+        self.lane_name = None
+        self.lane_loc = None
 
         # 10.0 m/s +- 2 m/s
         # multiplied by RATIO to translate it to px

@@ -1,18 +1,29 @@
 import math
+import itertools
 
 import pyglet as pg
 
 
-def closest_car(car_list: list):
+def closest_car(car_list: dict):
     # TODO: better detection, maybe
-    car_rays = {}
-    for i, cur_car in enumerate(car_list):
-        other_cars = car_list.copy()
-        other_cars.pop(i)
-        cur_to_other = {}
+    # unpack dict to get all cars and put it into a single list
+    cars = list(itertools.chain(*car_list.values()))
+    car_rays = {}  # all the car rays
+
+    for i, cur_car in enumerate(cars):
+        other_cars = car_list[cur_car.lane_name].copy()
+
+        # don't remove car if it's the only one
+        if len(other_cars) > 1:
+            other_cars.remove(cur_car)
+
+        cur_to_other = {}  # rays from current car to other cars; will find the min ray here later
         for next_car in other_cars:
+            # get pos for the front of current car
             x = cur_car.x + cur_car.width / 2 * math.cos(-math.radians(cur_car.rotation))
             y = cur_car.y + (cur_car.height + 2) * math.sin(-math.radians(cur_car.rotation))
+
+            # get pos for the back of other car
             x2 = next_car.x - next_car.width / 2 * math.cos(-math.radians(next_car.rotation))
             y2 = next_car.y - (next_car.height + 2) * math.sin(-math.radians(next_car.rotation))
 
@@ -43,7 +54,6 @@ def closest_car(car_list: list):
 
             # output the min ray and the corresponding speed of the next car
             car_rays[cur_car] = [min_ray, cur_to_other[min_ray]]
-
     return car_rays
 
 

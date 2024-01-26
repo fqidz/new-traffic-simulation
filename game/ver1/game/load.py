@@ -40,7 +40,8 @@ def cars(num_cars, batch=None, group=None):
                                       x=car_x, y=car_y, batch=batch, group=group)
 
         # save lane info to car
-        new_car.lane = {car_lane_name: car_lane_loc}
+        new_car.lane_name = car_lane_name
+        new_car.lane_loc = car_lane_loc
         # initialize rotation
         new_car.rotation = rot
 
