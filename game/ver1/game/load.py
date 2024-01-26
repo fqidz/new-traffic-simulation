@@ -1,5 +1,6 @@
 import random
 import pyglet as pg
+import time
 
 from . import resources, carobject, roads
 

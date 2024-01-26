@@ -1,5 +1,6 @@
 import math
 import random
+import itertools
 
 import pyglet as pg
 
@@ -22,9 +23,11 @@ NAN = float('Nan')
 
 class CarObject(pg.sprite.Sprite):
     """A sprite with physical properties such as velocity"""
+    id_iter = itertools.count()
 
     def __init__(self, *args, **kwargs):
         super(CarObject, self).__init__(*args, **kwargs)
+        self.id = next(self.id_iter)
 
         self.run = True
         self.lane_name = None
