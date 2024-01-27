@@ -106,7 +106,12 @@ class CarObject(pg.sprite.Sprite):
         self.velocity(max(0.0, self.speed))
 
         # input is in m/s and meters
-        accel = self.intelligent_driver_model(33.3, 2.0, 1.5, 0.73, 1.67)
+        desired_vel = 33.3 + random.uniform(-0.5, 0.5)
+        min_space = 2.0 + random.uniform(-0.3, 0.3)
+        max_accel = 0.73 + random.uniform(-0.1, 0.1)
+        des_time_headway = 1.5 + random.uniform(-0.2, 0.2)
+        comfortable_decel = 1.67 + random.uniform(-0.2, 0.2)
+        accel = self.intelligent_driver_model(desired_vel, min_space, des_time_headway, max_accel, comfortable_decel)
 
         if accel and self.run:
             # convert SI units to pixels and divide by framerate
