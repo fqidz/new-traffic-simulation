@@ -63,13 +63,13 @@ def angle_between(o, p1, p2):
     magnitude_product = math.sqrt(
         (v1[0] ** 2 + v1[1] ** 2) * (v2[0] ** 2 + v2[1] ** 2))
 
-    if dot_product > 0:
-        # duct tape fix for acos having >1 input (math domain error)
+    # catch math domain error (dot_product being >1; not allowed with acos)
+    try:
         if 1 >= dot_product / magnitude_product:
             angle = math.acos(dot_product / magnitude_product)
         else:
             angle = math.radians(180)
-    else:
+    except ValueError:
         angle = math.radians(180)
 
     return math.degrees(angle)
@@ -77,10 +77,10 @@ def angle_between(o, p1, p2):
 
 # TODO: adjust for rotation
 def col_check(x, y, obj: pg.sprite.Sprite):
-    left = obj.x - obj.width / 2
-    right = obj.x + obj.width / 2
-    top = obj.y + obj.height / 2
-    bottom = obj.y - obj.height / 2
+    left = obj.x - obj.width / 2  # - (obj.height / 2 * math.cos(math.radians(obj.rotation)))
+    right = obj.x + obj.width / 2  # + (obj.height / 2 * math.cos(math.radians(obj.rotation)))
+    top = obj.y + obj.height / 2  # + (obj.width / 2 * math.sin(math.radians(obj.rotation)))
+    bottom = obj.y - obj.height / 2  # - (obj.width / 2 * math.sin(math.radians(obj.rotation)))
 
     if (right > x > left and
             top > y > bottom):

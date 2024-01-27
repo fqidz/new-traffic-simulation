@@ -88,7 +88,13 @@ class CarObject(pg.sprite.Sprite):
             if acceleration > 20:
                 return 20
             elif acceleration < -20:
-                return -20
+                # TODO: fix car having negative acceleration
+                # don't add negative acceleration if car already stopped
+                if self.speed <= 0.0:
+                    self.speed = 0.0
+                    return 0
+                else:
+                    return -20
             else:
                 return acceleration
 

@@ -34,7 +34,7 @@ lines = deque(maxlen=30)
 
 
 def spawn_cars(dt):
-    spawn_cars_list = load.cars(2, batch=main_batch, group=foreground)
+    spawn_cars_list = load.cars(1, batch=main_batch, group=foreground)
     for car in spawn_cars_list:
         cars_per_lane[car.lane_name].append(car)
 
@@ -47,16 +47,17 @@ def on_draw():
 
 @window.event
 def on_mouse_press(x, y, button, modifiers):
-    # stop or start car on mouse press
     for obj in cars:
         col_check = behavior.col_check(x, y, obj)
-        if col_check:
+        if col_check and button == 1:  # stop or start car on left click
             if obj.run:
                 print(f"car at {[x, y]} stopped")
                 obj.run = False
-            elif not obj.run:
+            else:
                 print(f"car at {[x, y]} continued")
                 obj.run = True
+        elif col_check and button == 4:  # print info about car on right click
+            print(f"speed: {obj.speed}")
 
 
 def update(dt):
@@ -109,6 +110,6 @@ if __name__ == "__main__":
     # Update the game 120 times per second
     pg.clock.schedule_interval(update, 1 / 120.0)
     # Spawn cars every interval
-    pg.clock.schedule_interval(spawn_cars, 1)
+    pg.clock.schedule_interval(spawn_cars, 0.5)
 
     pg.app.run()
