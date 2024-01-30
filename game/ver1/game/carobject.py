@@ -114,8 +114,11 @@ class CarObject(pg.sprite.Sprite):
         accel = self.intelligent_driver_model(desired_vel, min_space, des_time_headway, max_accel, comfortable_decel)
 
         if accel and self.run:
-            # convert SI units to pixels and divide by framerate
-            self.speed += (accel * RATIO) / 60.0
+            if self.speed > -0.1:  # prevent negative speed build up
+                # convert SI units to pixels and divide by framerate
+                self.speed += (accel * RATIO) / 60.0
+            else:
+                self.speed = 0
         elif not self.run:
             self.speed *= 0.99
 

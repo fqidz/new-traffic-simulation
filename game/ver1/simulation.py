@@ -3,7 +3,7 @@ from collections import deque
 import pyglet as pg
 import itertools
 
-from game import behavior, load
+from game import behavior, load, traffic
 
 # Set up a window
 window = pg.window.Window(1000, 1000)
@@ -26,6 +26,7 @@ cars_per_lane = {"right_left_lane": [],
                  "bottom_left_lane": [],
                  "bottom_right_lane": []}
 
+# traffic.TrafficLight("left_right_lane", 420, 455)
 # TODO: switch out for full background image
 road = load.road(500, 500, batch=main_batch, group=background)
 
